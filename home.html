@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <title>Remote Medical Consultation</title>
+    <style>
+      /* Basic styling for the header */
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background-color: lightgoldenrodyellow;
+      }
+
+      header {
+        background-color: #007bff;
+        color: white;
+        text-align: center;
+        padding: 20px;
+        height: 10vh;
+        z-index: 1;
+        position: fixed;
+        width: 100vw;
+      }
+
+      /* Styling for the main content */
+      main {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      /* Styling for the appointment form */
+      .appointment-form {
+        /* border: 1px solid #ccc; */
+        padding: 20px;
+        /* margin-bottom: 20px; */
+        background-color: #f9f9f9;
+        border-left: 7px solid orange;
+        border-radius: 25px;
+      }
+
+      .appointment-form h2 {
+        color: #007bff;
+        margin-bottom: 10px;
+      }
+
+      /* Styling for the video consultation section */
+      .video-consultation {
+        /* border: 1px solid #ccc; */
+        padding: 20px;
+        text-align: center;
+        background-color: #f9f9f9;
+        border-left: 7px solid orange;
+        border-radius: 25px;
+      }
+
+      .video-consultation h2 {
+        margin-bottom: 30px;
+      }
+
+      /* Styling for buttons */
+      button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        text-align: center;
+        margin: auto;
+        display: flex;
+      }
+
+      button:hover {
+        background-color: #0056b3;
+      }
+
+      /* Styling for the footer */
+      footer {
+        text-align: center;
+        background-color: #007bff;
+        color: white;
+        padding: 10px 0;
+      }
+
+      /* Styling for form inputs */
+      input[type="text"],
+      input[type="date"],
+      input[type="time"],
+      select {
+        width: 90%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 15px;
+      }
+
+      #logout-button {
+        position: relative;
+        /* float: right; */
+        background-color: rgb(249, 253, 0);
+        border-radius: 25px;
+        color: black;
+        left: 44vw;
+      }
+
+      label {
+        color: black;
+        display: flex;
+      }
+
+      #doctor {
+        width: 93%;
+      }
+
+      .outer_appointment-form {
+        border: 1.2px solid orange;
+        border-radius: 25.2px;
+        margin: 20px;
+      }
+
+      .outer_video-consultaion {
+        border: 1.2px solid orange;
+        border-radius: 25.2px;
+        margin: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Remote Medical Consultation Platform</h1>
+      <div id="user-info">
+        <span id="user-name"></span>
+        <button id="logout-button" onclick="logout()">Logout</button>
+      </div>
+    </header>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <main>
+      <div class="outer_appointment-form">
+        <div class="appointment-form">
+          <h2>Schedule an Appointment</h2>
+          <form id="appointment-form">
+            <label for="name">Your Name:</label>
+            <input type="text" id="name" required />
+            <label for="date">Date:</label>
+            <input type="date" id="date" required />
+            <label for="time">Time:</label>
+            <input type="time" id="time" required />
+            <label for="doctor">Select Doctor:</label>
+            <select id="doctor">
+              <option value="Dr-Smith">Dr. Smith</option>
+              <option value="Dr-Jones">Dr. Jones</option>
+              <!-- Add more doctor options here -->
+            </select>
+            <button type="submit">Schedule</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="outer_video-consultaion">
+        <div class="video-consultation">
+          <h2>Video Consultation</h2>
+          <button id="start-consultation">Start Consultation</button>
+        </div>
+      </div>
+
+      <!-- ... (Your existing code) ... -->
+    </main>
+    <footer>
+      <p>&copy; 2023 Remote Medical Consultation Platform</p>
+    </footer>
+    <script>
+      // User Authentication (Simulated)
+      let currentUser = null;
+
+      function login() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const username = urlParams.get("exampleInputEmail1");
+        const name = urlParams.get("name");
+
+        if (username && name) {
+          currentUser = { username, name };
+          alert(Welcome,` ${currentUser.name}!`);
+          displayUserInfo();
+          displayAppointmentHistory();
+        } else {
+          alert("Invalid user data. Please log in.");
+        }
+      }
+
+      function logout() {
+        currentUser = null;
+        alert("Logged out successfully.");
+        // Redirect to the login page or another appropriate page
+        window.location.href = "index.html";
+      }
+
+      // Function to toggle the display of the payment section
+
+      // Function to display user information in the header
+      function displayUserInfo() {
+        const userNameSpan = document.getElementById("exampleInputEmail1");
+        if (currentUser) {
+          userNameSpan.textContent = currentUser.name;
+        }
+      }
+
+      // Function to display appointment history
+      function displayAppointmentHistory() {
+        const appointmentList = document.getElementById("appointment-list");
+        // Simulated appointment data (you can replace this with actual data)
+        const appointments = [
+          { doctor: "Dr. Smith", date: "2023-12-10", time: "10:00 AM" },
+          { doctor: "Dr. Jones", date: "2023-04-12", time: "11:30 AM" },
+          // Add more appointment data here
+        ];
+
+        // Clear existing appointment list
+        appointmentList.innerHTML = "";
+
+        // Populate the appointment list
+        appointments.forEach((appointment) => {
+          const listItem = document.createElement("li");
+          listItem.textContent = `Doctor: ${appointment.doctor}, Date: ${appointment.date}, Time: ${appointment.time}`;
+          appointmentList.appendChild(listItem);
+        });
+      }
+
+      // JavaScript for handling the appointment form submission
+      document
+        .getElementById("appointment-form")
+        .addEventListener("submit", function (event) {
+          event.preventDefault(); // Prevent the form from submitting
+
+          // Get the form values
+          var name = document.getElementById("name").value;
+          var date = document.getElementById("date").value;
+          var time = document.getElementById("time").value;
+          var selectedDoctor = document.getElementById("doctor").value;
+
+          // Validation: Check if name, date, and time are not empty
+          if (!name || !date || !time) {
+            alert("Please fill out all fields before scheduling.");
+            return;
+          }
+
+          // Simulated appointment details (you can replace this with actual data)
+          var appointmentDetails = {
+            name: name,
+            date: date,
+            time: time,
+            doctor: selectedDoctor,
+          };
+
+          // Store appointment details in local storage
+          localStorage.setItem(
+            "appointmentDetails",
+            JSON.stringify(appointmentDetails)
+          );
+
+          // Redirect to the confirmation page
+          window.location.href = "conf.html";
+        });
+
+      // ... (The rest of your existing JavaScript code) ...
+    </script>
+  </body>
+</html>

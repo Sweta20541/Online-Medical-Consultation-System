@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <title>Appointment Confirmation</title>
+    <style>
+      /* Basic styling for the header */
+      * {
+        margin: 0 auto;
+        padding: 0;
+      }
+
+      body {
+        background-color: lightgoldenrodyellow;
+      }
+      main {
+        max-width: 50vw;
+      }
+
+      header {
+        background-color: #007bff;
+        color: white;
+        text-align: center;
+        padding: 20px;
+        z-index: 1;
+        position: fixed;
+        width: 100vw;
+        z-index: 1;
+      }
+
+      ul {
+        list-style: none;
+      }
+
+      /* Styling for the confirmation message */
+      .confirmation-message {
+        max-width: 50vw;
+        padding: 20px;
+        border: 1px solid #ccc;
+        background-color: #f9f9f9;
+        text-align: center;
+        border-left: 7px solid orange;
+        border-radius: 25px;
+      }
+
+      button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        text-align: center;
+        margin: auto;
+        display: flex;
+      }
+
+      button:hover {
+        background-color: #0056b3;
+      }
+
+      /* Styling for the footer */
+      footer {
+        text-align: center;
+        background-color: #007bff;
+        color: white;
+        padding: 10px 0;
+        position: fixed;
+        width: 100%;
+        left: 0;
+        bottom: 0;
+      }
+
+      h2,
+      h4,
+      p {
+        margin-bottom: 1.8vh;
+      }
+
+      li {
+        margin-bottom: 1vh;
+      }
+
+      #toggle-payment {
+        top: 5px;
+        position: relative;
+        left: 5px;
+      }
+
+      .payment {
+        display: block;
+        max-width: 50vw;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        background-color: #f9f9f9;
+        text-align: center;
+        border-left: 7px solid orange;
+        border-radius: 25px;
+      }
+
+      .outer_payment {
+        border: 1.2px solid orange;
+        border-radius: 25.2px;
+        margin: 20px;
+      }
+
+      .outer_confirmation-message {
+        border: 1.2px solid orange;
+        border-radius: 25.2px;
+        margin: 2vh auto;
+      }
+
+      #pay {
+        top: 10px;
+        position: relative;
+      }
+
+      /* #payment-form {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-row-gap: 10px;
+  } */
+
+      .input-container {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+
+      .input-container label {
+        margin-right: 5px;
+      }
+
+      #cvv {
+        left: 15px;
+        position: relative;
+      }
+
+      #card-number {
+        left: -4px;
+        position: relative;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Appointment Confirmation</h1>
+    </header>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <main>
+      <div class="outer_confirmation-message">
+        <div class="confirmation-message">
+          <h2>Appointment Almost Scheduled!!!</h2>
+          <h4>Complete the payment to confirm your appointment</h4>
+          <p>
+            Thank you for scheduling an appointment with Remote Medical
+            Consultation Platform.
+          </p>
+          <p>Your appointment details:</p>
+          <ul>
+            <li><strong>Name:</strong> <span id="name"></span></li>
+            <li><strong>Date:</strong> <span id="date"></span></li>
+            <li><strong>Time:</strong> <span id="time"></span></li>
+            <li><strong>Doctor:</strong> <span id="doctor"></span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Payment option will be remained hidden until it's button is not clicked -->
+      <div class="outer_payment" id="section">
+        <div class="payment" id="payment-section" style="display: none">
+          <h2>Payment</h2>
+          <form id="payment-form">
+            <div class="input-container">
+              <label for="card-number">Card Number:</label>
+              <input type="text" id="card-number" required />
+            </div>
+            <div class="input-container">
+              <label for="expiry-date">Expiry Date:</label>
+              <input
+                type="month"
+                name="expiry"
+                id="expiry-date"
+                min="11/2025"
+                max="12/3000"
+                placeholder="MM/YYYY"
+                required
+              />
+            </div>
+            <div class="input-container">
+              <label for="cvv">CVV:</label>
+              <input type="text" id="cvv" required />
+            </div>
+
+            <button id="pay" type="submit">Make Payment</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Button to Show/Hide Payment Section -->
+      <button id="toggle-payment" onclick="togglePayment()">
+        Open Payment
+      </button>
+    </main>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <footer>
+      <p>&copy; 2023 Remote Medical Consultation Platform</p>
+    </footer>
+    <script>
+      function togglePayment() {
+        const paymentSection = document.getElementById("payment-section");
+        const toggleButton = document.getElementById("toggle-payment");
+
+        if (paymentSection.style.display === "none") {
+          paymentSection.style.display = "block";
+          toggleButton.textContent = "Close Payment";
+        } else {
+          paymentSection.style.display = "none";
+          toggleButton.textContent = "Open Payment";
+        }
+      }
+
+      // JavaScript to populate the confirmation page with appointment details
+      document.addEventListener("DOMContentLoaded", function () {
+        // Retrieve appointment details from local storage
+        var appointmentDetails = JSON.parse(
+          localStorage.getItem("appointmentDetails")
+        );
+
+        if (appointmentDetails) {
+          // Get elements to display appointment details
+          var nameElement = document.getElementById("name");
+          var dateElement = document.getElementById("date");
+          var timeElement = document.getElementById("time");
+          var doctorElement = document.getElementById("doctor");
+
+          // Populate the elements with appointment details
+          nameElement.textContent = appointmentDetails.name;
+          dateElement.textContent = appointmentDetails.date;
+          timeElement.textContent = appointmentDetails.time;
+          doctorElement.textContent = appointmentDetails.doctor;
+        } else {
+          // Handle the case where there are no appointment details
+          console.error("No appointment details found.");
+        }
+      });
+
+      // function pay() {
+      //   // Redirect to the login page or another appropriate page
+      //   window.location.href = "index.html";
+      // }
+    </script>
+  </body>
+</html>
